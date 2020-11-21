@@ -1,0 +1,7 @@
+*.[0ao]
+*.so
+*~
+.vscode/
+done/lab3_cat
+done/lab3_ls
+done/test_fs
