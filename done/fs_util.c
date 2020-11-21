@@ -96,9 +96,13 @@ int read_from_disk(disk_off_t disk_offset, void *buffer, size_t size)
 
     if (disk_offset + size > DISK_CAPACITY_BYTES) return -1;
 
-    size_t disk_no = disk_offset / DISK_BLK_SIZE;
+    if (size == 0) return 0;
 
-    if ((disk_offset + size)/DISK_BLK_SIZE != disk_no) return -1;
+    size_t disk_no = disk_offset / DISK_BLK_SIZE;
+    size_t disk_check_no = (disk_offset + size) / DISK_BLK_SIZE;
+    disk_check_no = (disk_offset + size) % DISK_BLK_SIZE == 0 ? disk_check_no - 1 : disk_check_no;
+
+    if (disk_check_no != disk_no) return -1;
     
     char *blk_buf = (char *)malloc(DISK_BLK_SIZE);
 

@@ -38,7 +38,7 @@ int32_t lab3_read(int fd, void *buffer, uint32_t size)
         size_t blk_idx = cur / DISK_BLK_SIZE;
         size_t buf_offset = cur - offset;
 
-        if (read_from_disk(inode->file.data_block_offsets[blk_idx], 
+        if (read_from_disk(inode->file.data_block_offsets[blk_idx] + cur % DISK_BLK_SIZE, 
                            (void *)((char *)buffer + buf_offset), next - cur) < 0) {
             return -1;
         }
@@ -48,7 +48,7 @@ int32_t lab3_read(int fd, void *buffer, uint32_t size)
     }
 
     if (offset + size > cur) {
-        if (read_from_disk(inode->file.data_block_offsets[cur / DISK_BLK_SIZE], 
+        if (read_from_disk(inode->file.data_block_offsets[cur / DISK_BLK_SIZE] + cur % DISK_BLK_SIZE, 
                            (void *)((char *)buffer + cur - offset), 
                            offset + size - cur) < 0) {
             return -1;
